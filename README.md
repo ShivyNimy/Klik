@@ -93,6 +93,11 @@ checks every bundled thumbnail, and deploys the generated `dist/` artifact from 
 **GitHub Actions** as its build/deploy source (not the repository source branch), because the repository contains
 Vite/TypeScript source that needs to be compiled before it can run in a browser.
 
+> One-time setup: in **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**.
+> If the site is still on the legacy branch source, the workflow prints a warning and skips publishing
+> instead of failing — but the site itself will keep serving the uncompiled `index.html` until that
+> setting is changed. (This setting cannot be changed by the CI token; it needs a repo admin in the UI.)
+
 ### Self-contained build (single request)
 
 `npm run preview` runs `vite build` and then `scripts/make-standalone.mjs`, which

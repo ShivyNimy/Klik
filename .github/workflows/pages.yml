@@ -65,6 +65,20 @@ jobs:
       pages: write
       id-token: write
     steps:
+      # `deploy-pages` only works when the Pages site uses "GitHub Actions" as its
+      # build source. Repos still on the legacy branch/Jekyll source would fail
+      # here, so detect that case and warn instead of leaving a red build.
+      - name: Check GitHub Pages build source
+        id: pages_source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          build_type="$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type || echo unknown)"
+          echo "build_type=$build_type" >> "$GITHUB_OUTPUT"
+          if [ "$build_type" != "workflow" ]; then
+            echo "::warning::GitHub Pages source is '$build_type'. In repo Settings → Pages → Build and deployment, set Source to 'GitHub Actions' to publish the built artifact."
+          fi
       - name: Deploy to GitHub Pages
+        if: steps.pages_source.outputs.build_type == 'workflow'
         id: deployment
         uses: actions/deploy-pages@v5
