@@ -275,7 +275,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
       if (d < 78 + m.size) {
         const ang = Math.atan2(m.y - s.py, m.x - s.px);
         if (Math.abs(ang - s.aim) < 1.3) {
-          m.hp -= m.kind === 'wendigo' ? 16 : 34;
+          m.hp -= m.kind === 'wendigo' ? 20 : 34;
           m.flash = 0.25;
           m.vx += Math.cos(ang) * 260;
           m.vy += Math.sin(ang) * 260;
@@ -417,7 +417,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
   const touchMove = useRef({ x: 0, y: 0 });
   const [isTouch, setIsTouch] = useState(false);
   useEffect(() => {
-    setIsTouch(window.matchMedia('(pointer: coarse)').matches);
+    setIsTouch(window.matchMedia?.('(pointer: coarse)')?.matches ?? false);
   }, []);
   const getLocal = (e: React.PointerEvent | PointerEvent) => {
     const canvas = canvasRef.current!;
@@ -649,7 +649,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
           d < 330 &&
           Math.abs(Math.atan2(m.y - s.py, m.x - s.px) + Math.PI - s.aim) < coneAngle;
         if (inBeam) {
-          m.hp -= dt * (m.kind === 'wendigo' ? 13 : 30);
+          m.hp -= dt * (m.kind === 'wendigo' ? 16 : 30);
           m.stun = Math.max(m.stun, 0.35);
           const a = Math.atan2(m.y - s.py, m.x - s.px);
           mvx -= Math.cos(a) * 150;
@@ -757,7 +757,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
     }
 
     // HUD throttle
-    if (Math.floor(s.time * 8) % 2 === 0) {
+    if (started && !s.dead && !s.won && Math.floor(s.time * 8) % 2 === 0) {
       setHud({
         hp: Math.max(0, Math.round(s.hp)),
         hunger: Math.round(s.hunger),
@@ -1021,7 +1021,7 @@ function spawnNight(s: N99State) {
   if (s.night >= 2) {
     const a = rand(0, Math.PI * 2);
     const r = rand(560, 720);
-    const hp = 90 + s.night * 5.5;
+    const hp = 80 + s.night * 3.6;
     s.monsters.push({
       x: clamp(s.px + Math.cos(a) * r, 40, WORLD.w - 40),
       y: clamp(s.py + Math.sin(a) * r, 40, WORLD.h - 40),
@@ -1029,7 +1029,7 @@ function spawnNight(s: N99State) {
       vy: 0,
       hp,
       maxHp: hp,
-      speed: 78 + Math.min(58, s.night * 0.8),
+      speed: 74 + Math.min(52, s.night * 0.65),
       size: 26,
       kind: 'wendigo',
       hitCd: 2,

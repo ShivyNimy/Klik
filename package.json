@@ -2,12 +2,14 @@
   "name": "klik-games",
   "private": true,
   "version": "1.0.0",
-  "description": "Klik Games — Instant Browser Gaming Portal featuring 99 Nights in the Forest and 15+ Original HTML5 Games",
+  "description": "Klik Games \u2014 Instant Browser Gaming Portal featuring 99 Nights in the Forest and 15+ Original HTML5 Games",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 4173"
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "test": "vite-node test/smoke.tsx",
+    "test:n99": "vite-node test/n99.tsx"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -19,9 +21,11 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "jsdom": "^31.0.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vite-node": "^6.0.0"
   }
 }

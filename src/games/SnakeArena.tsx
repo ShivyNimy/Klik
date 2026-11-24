@@ -42,7 +42,7 @@ export default function SnakeArena() {
 
   const mouse = useRef({ x: W / 2, y: H / 2 - 100, down: false });
   const g = useRef({
-    pts: [] as Pt[],
+    pts: Array.from({ length: 90 }, (_, i) => ({ x: -i * SEG_SPACING, y: 0 })) as Pt[],
     angle: 0,
     length: 24,
     targetLength: 24,
@@ -116,6 +116,18 @@ export default function SnakeArena() {
   }, [started, reset]);
 
   useHiDPI(canvasRef, W, H);
+
+  useEffect(() => {
+    const up = () => {
+      mouse.current.down = false;
+    };
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    return () => {
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+    };
+  }, []);
 
   const die = (killer: string) => {
     const s = g.current;
@@ -568,6 +580,7 @@ function drawSnake(
   toScreen: (x: number, y: number) => { x: number; y: number },
   isPlayer: boolean
 ) {
+  if (!pts || pts.length < 2) return;
   const total = pts.length;
   for (let i = total - 1; i >= 0; i--) {
     const p = toScreen(pts[i].x, pts[i].y);
