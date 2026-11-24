@@ -489,7 +489,7 @@ export default function SnakeArena() {
       {started && !dead && (
         <>
           <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-lg border border-white/10 bg-black/50 px-3 py-1.5 text-[10px] font-bold text-slate-300 backdrop-blur">
-            🖱️ Mouse steers · Hold click to boost
+            🖱️ Mouse / touch steers · Hold to boost
           </div>
           <div className="pointer-events-none absolute right-3 top-3 w-32 rounded-lg border border-white/10 bg-black/50 p-2 backdrop-blur">
             <div className="mb-1 flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-teal-300">

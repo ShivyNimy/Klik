@@ -1,3 +1,5 @@
+import { assetUrl } from '../utils/assets';
+
 export type GameCategory =
   | 'All'
   | 'Featured'
@@ -18,10 +20,7 @@ export interface GameItem {
   controls: { keys: string; action: string }[];
   categories: GameCategory[];
   thumbnail: string;
-  badge?: 'HOT' | 'TOP #1' | 'NEW' | 'POPULAR' | '2P';
-  rating: number;
-  plays: string;
-  developer: string;
+  badge?: 'EDITOR PICK' | 'ORIGINAL' | '2P';
   featured?: boolean;
   accentColor: string;
 }
@@ -32,13 +31,13 @@ export const GAMES: GameItem[] = [
     title: '99 Nights in the Forest',
     subtitle: 'Survive the Wendigo, keep the campfire burning & rescue the 4 lost children!',
     description:
-      'Step into the chilling dark pine woods in 99 Nights in the Forest! Choose your survivor class—Ranger, Lumberjack, Medic, or Assassin—and brave an escalating survival horror nightmare. Chop wood, forage berries, mine stone, craft spike barricades and automated lanterns during the brief daylight hours. When darkness falls, the ancient antlered Deer Monster (Wendigo) and shadow stalkers emerge from the fog. Keep your central campfire roaring, manage your flashlight battery to stun and repel the beast, and venture deep into the forest shrines to rescue all 4 missing children—each child rescued multiplies your night progression toward Night 99!',
+      'Survive an escalating night-and-day cycle in a dark pine forest. Gather wood, berries, stone, batteries, and scrap; keep the central campfire fueled; and craft spike traps, torches, medkits, and battery packs. At night the Wendigo and shadow stalkers emerge. Use the flashlight to repel the Wendigo, rescue four children from cages around the forest, and advance toward Night 99. Each rescued child adds two extra nights to each dawn advance.',
     howToPlay: [
-      'Explore the forest during daytime to chop pine trees (Wood), bushes (Berries), stone nodes, and loot crates (Batteries & Scrap).',
-      'Return to the Campfire clearing in the center and press [F] to stoke the fire with Wood or cook berries for Hunger & HP.',
-      'Open the Crafting Bar ([1]-[4] keys or click icons) to place Spike Traps, Camp Torches, or craft Medkits and Battery Packs.',
-      'Hold Right-Click or Spacebar to shine your directional Flashlight beam directly at the Wendigo to burn & repel it—watch your battery!',
-      'Follow the compass radar arrows to locate and unlock the 4 Missing Children cages across the deep forest. Each rescued child boosts your Night Multiplier (+1 night per dawn)!',
+      'Explore during the day to chop pine trees for Wood, forage Berries, mine Stone, and search crates for Batteries and Scrap.',
+      'Return to the central Campfire and press [E] to feed it Wood. Press [R] to eat a ration and restore Hunger and HP.',
+      'Use the Crafting Bar ([1]-[4] keys or click icons) to place Spike Traps and Camp Torches, or craft Medkits and Battery Packs.',
+      'Press Space to toggle the flashlight or hold Right-Click to aim its beam at the Wendigo—watch your battery!',
+      'Follow the compass to find the four child cages. Each rescued child adds two extra nights to every dawn advance.',
     ],
     controls: [
       { keys: 'WASD / Arrows', action: 'Move Survivor' },
@@ -49,11 +48,8 @@ export const GAMES: GameItem[] = [
       { keys: '1 - 4', action: 'Craft & Build Traps / Torches / Gear' },
     ],
     categories: ['Featured', 'Horror & Survival', 'Action'],
-    thumbnail: '/images/99-nights.jpg',
-    badge: 'TOP #1',
-    rating: 4.9,
-    plays: '4.8M',
-    developer: 'Klik Originals',
+    thumbnail: assetUrl('images/99-nights.jpg'),
+    badge: 'ORIGINAL',
     featured: true,
     accentColor: 'from-amber-500 via-orange-600 to-rose-700',
   },
@@ -71,14 +67,11 @@ export const GAMES: GameItem[] = [
     controls: [
       { keys: 'A / D or Left / Right', action: 'Run Left / Right' },
       { keys: 'W / Up / Space', action: 'Jump & Double Jump' },
-      { keys: 'Shift', action: 'Air Dash' },
+      { keys: 'Shift / X', action: 'Air Dash' },
     ],
     categories: ['Featured', 'Action', 'Arcade & .io'],
-    thumbnail: '/images/sky-parkour.jpg',
-    badge: 'HOT',
-    rating: 4.8,
-    plays: '2.9M',
-    developer: 'CloudJump Studio',
+    thumbnail: assetUrl('images/sky-parkour.jpg'),
+    badge: 'EDITOR PICK',
     featured: true,
     accentColor: 'from-sky-400 to-indigo-600',
   },
@@ -95,14 +88,11 @@ export const GAMES: GameItem[] = [
     ],
     controls: [
       { keys: 'A / D or Left / Right', action: 'Steer & Drift' },
-      { keys: 'W / Space', action: 'Activate Nitro Boost' },
+      { keys: 'W / Up / Space / Shift', action: 'Activate Nitro Boost' },
     ],
     categories: ['Featured', 'Racing & Sports', 'Arcade & .io'],
-    thumbnail: '/images/cyber-drift.jpg',
-    badge: 'POPULAR',
-    rating: 4.8,
-    plays: '1.9M',
-    developer: 'NeonApex',
+    thumbnail: assetUrl('images/cyber-drift.jpg'),
+    badge: 'EDITOR PICK',
     featured: true,
     accentColor: 'from-fuchsia-500 to-cyan-500',
   },
@@ -122,11 +112,8 @@ export const GAMES: GameItem[] = [
       { keys: 'Mouse Click', action: 'Select Level-Up Evolution' },
     ],
     categories: ['Featured', 'Action', 'Horror & Survival'],
-    thumbnail: '/images/astro-survivors.jpg',
-    badge: 'HOT',
-    rating: 4.9,
-    plays: '3.1M',
-    developer: 'StarForge Games',
+    thumbnail: assetUrl('images/astro-survivors.jpg'),
+    badge: 'EDITOR PICK',
     featured: true,
     accentColor: 'from-violet-600 to-blue-500',
   },
@@ -137,20 +124,17 @@ export const GAMES: GameItem[] = [
     description:
       'Enter the hexagonal neon grid as a nimble cyber-snake! Eat luminous energy pellets to grow massive, cut off rival AI snakes so they crash into your trail, and feast on their dropped mass to claim the #1 Crown.',
     howToPlay: [
-      'Guide your snake smoothly with your mouse cursor or arrow keys.',
-      'Hold Click or Space to sprint—watch out, boosting burns a tiny bit of length!',
+      'Guide your snake with the mouse or your finger on a touch screen.',
+      'Hold the mouse button or touch the screen to sprint—boosting slowly uses some length.',
       'Make other snakes collide head-first into your body to burst them into giant orbs.',
     ],
     controls: [
-      { keys: 'Mouse / Left-Right', action: 'Steer Snake' },
-      { keys: 'Left Click / Space', action: 'Speed Boost' },
+      { keys: 'Mouse / Touch', action: 'Steer Snake' },
+      { keys: 'Hold Mouse / Touch', action: 'Speed Boost' },
     ],
     categories: ['Featured', 'Arcade & .io'],
-    thumbnail: '/images/slither-arena.jpg',
-    badge: 'POPULAR',
-    rating: 4.7,
-    plays: '3.6M',
-    developer: 'GridWorks .io',
+    thumbnail: assetUrl('images/slither-arena.jpg'),
+    badge: 'EDITOR PICK',
     accentColor: 'from-emerald-400 to-cyan-500',
   },
   {
@@ -168,11 +152,7 @@ export const GAMES: GameItem[] = [
       { keys: 'WASD / Arrow Keys', action: 'Slide & Merge Forge Grid' },
     ],
     categories: ['Puzzle & Merge', 'Strategy & Idle'],
-    thumbnail: '/images/dungeon-merge.jpg',
-    badge: 'NEW',
-    rating: 4.7,
-    plays: '940K',
-    developer: 'MythicAnvil',
+    thumbnail: assetUrl('images/dungeon-merge.jpg'),
     accentColor: 'from-amber-500 to-purple-600',
   },
   {
@@ -191,11 +171,8 @@ export const GAMES: GameItem[] = [
       { keys: '1 / 2 / 3', action: 'Select Turret Blueprint' },
     ],
     categories: ['Strategy & Idle', 'Horror & Survival'],
-    thumbnail: '/images/zombie-siege.jpg',
-    badge: 'POPULAR',
-    rating: 4.8,
-    plays: '1.5M',
-    developer: 'Outpost Interactive',
+    thumbnail: assetUrl('images/zombie-siege.jpg'),
+    badge: 'EDITOR PICK',
     accentColor: 'from-lime-500 to-emerald-700',
   },
   {
@@ -213,10 +190,7 @@ export const GAMES: GameItem[] = [
       { keys: 'Mouse Drag & Release', action: 'Aim Arc & Shoot Ball' },
     ],
     categories: ['Racing & Sports', 'Arcade & .io'],
-    thumbnail: '/images/turbo-hoops.jpg',
-    rating: 4.6,
-    plays: '1.1M',
-    developer: 'CourtKings',
+    thumbnail: assetUrl('images/turbo-hoops.jpg'),
     accentColor: 'from-orange-500 to-red-600',
   },
   {
@@ -227,7 +201,7 @@ export const GAMES: GameItem[] = [
       'Classic arcade brick-breaking supercharged with neon particle physics, multi-ball chaos, wide-paddle shields, and explosive prism blocks.',
     howToPlay: [
       'Move your energy paddle to deflect the plasma ball into crystal bricks.',
-      'Catch falling powerup capsules for Multi-Ball, Wide Paddle, and Bonus Score!',
+      'Catch falling powerup capsules for Multi-Ball, a Wide Paddle, or an Extra Life!',
       'Clear every crystal wall to advance to faster stages.',
     ],
     controls: [
@@ -235,10 +209,7 @@ export const GAMES: GameItem[] = [
       { keys: 'Space / Click', action: 'Launch Plasma Ball' },
     ],
     categories: ['Arcade & .io', 'Puzzle & Merge'],
-    thumbnail: '/images/neon-breaker.jpg',
-    rating: 4.6,
-    plays: '880K',
-    developer: 'PrismArcade',
+    thumbnail: assetUrl('images/neon-breaker.jpg'),
     accentColor: 'from-pink-500 to-violet-600',
   },
   {
@@ -246,21 +217,17 @@ export const GAMES: GameItem[] = [
     title: 'Crystal Mine Tycoon',
     subtitle: 'Tap enchanted gems, hire goblin drills & build an automated crystal empire!',
     description:
-      'Strike it rich inside a glowing cavern! Mine magic crystals with critical strikes, invest in Quantum Drills, Arcane Golems, and Portal Refineries, and unlock prestige multipliers.',
+      'Strike it rich inside a glowing cavern! Mine magic crystals, upgrade your click power, and invest in goblin crews, arcane golems, quantum drills, and other generators to grow your passive gem income.',
     howToPlay: [
       'Click the giant enchanted crystal for instant gem bursts and critical combos.',
       'Purchase automated miners and upgrades on the right panel to skyrocket Gems/sec.',
       'Catch golden floating meteors for huge frenzy bonuses!',
     ],
     controls: [
-      { keys: 'Mouse Left Click / Space', action: 'Mine Crystal & Buy Upgrades' },
+      { keys: 'Mouse / Touch', action: 'Mine Crystal & use the upgrade buttons' },
     ],
     categories: ['Strategy & Idle'],
-    thumbnail: '/images/clicker-tycoon.jpg',
-    badge: 'NEW',
-    rating: 4.7,
-    plays: '1.3M',
-    developer: 'IdleRealms',
+    thumbnail: assetUrl('images/clicker-tycoon.jpg'),
     accentColor: 'from-purple-500 to-amber-500',
   },
   {
@@ -275,21 +242,18 @@ export const GAMES: GameItem[] = [
     ],
     controls: [
       { keys: 'W / Up / Space', action: 'Jump & Double Jump' },
-      { keys: 'X / Left Click', action: 'Katana Dash Slash' },
+      { keys: 'X / J / Enter / Left Click', action: 'Katana Dash Slash' },
     ],
     categories: ['Action', 'Arcade & .io'],
-    thumbnail: '/images/shadow-ninja.svg',
-    rating: 4.7,
-    plays: '790K',
-    developer: 'RoninByte',
+    thumbnail: assetUrl('images/shadow-ninja.svg'),
     accentColor: 'from-rose-500 to-teal-400',
   },
   {
     id: 'cyber-pong-duel',
     title: 'Cyber Pong Duel (1P / 2P)',
-    subtitle: 'Challenge a friend on one keyboard or duel the Cyber AI in plasma table tennis!',
+    subtitle: 'Challenge a friend on one keyboard or play the built-in Cyber AI in plasma table tennis!',
     description:
-      'Play solo against an adaptive Cyber AI or grab a friend for local 2-Player keyboard duels! Curve shots with paddle momentum, trigger speed rallies, and race to 7 points.',
+      'Play solo against the built-in AI or grab a friend for local 2-player keyboard duels. Curve shots with paddle momentum, trigger speed rallies, and race to 7 points.',
     howToPlay: [
       'Toggle between 1-Player vs AI or 2-Player Local Mode at any time.',
       'Deflect the plasma orb past your opponent—each volley increases ball velocity!',
@@ -299,11 +263,8 @@ export const GAMES: GameItem[] = [
       { keys: 'Up / Down Arrows', action: 'Player 2 Paddle (Right)' },
     ],
     categories: ['2 Player', 'Racing & Sports', 'Arcade & .io'],
-    thumbnail: '/images/cyber-pong.svg',
+    thumbnail: assetUrl('images/cyber-pong.svg'),
     badge: '2P',
-    rating: 4.8,
-    plays: '1.2M',
-    developer: 'Klik Arena',
     accentColor: 'from-cyan-400 to-rose-500',
   },
   {
@@ -323,10 +284,7 @@ export const GAMES: GameItem[] = [
       { keys: 'Space', action: 'Instant Hard Drop' },
     ],
     categories: ['Puzzle & Merge', 'Arcade & .io'],
-    thumbnail: '/images/hexa-blocks.svg',
-    rating: 4.8,
-    plays: '1.6M',
-    developer: 'TetroPulse',
+    thumbnail: assetUrl('images/hexa-blocks.svg'),
     accentColor: 'from-purple-500 to-pink-500',
   },
   {
@@ -338,17 +296,14 @@ export const GAMES: GameItem[] = [
     howToPlay: [
       'Left-click any tile to scan it—your first click is always 100% safe.',
       'Numbers show how many adjacent mines touch that tile (out of 8 neighbors).',
-      'Right-click (or toggle Flag Mode) to mark suspected plasma mines!',
+      'Right-click, press F, or toggle Flag Mode to mark suspected plasma mines!',
     ],
     controls: [
       { keys: 'Left Click', action: 'Reveal Tile' },
       { keys: 'Right Click / F', action: 'Place / Remove Flag' },
     ],
     categories: ['Puzzle & Merge', 'Strategy & Idle'],
-    thumbnail: '/images/mines-sweeper.svg',
-    rating: 4.6,
-    plays: '670K',
-    developer: 'LogicCore',
+    thumbnail: assetUrl('images/mines-sweeper.svg'),
     accentColor: 'from-teal-400 to-sky-500',
   },
   {
@@ -364,11 +319,8 @@ export const GAMES: GameItem[] = [
     controls: [
       { keys: 'Mouse Left Click', action: 'Flip Holo-Card' },
     ],
-    categories: ['Puzzle & Merge', '2 Player'],
-    thumbnail: '/images/memory-matrix.svg',
-    rating: 4.5,
-    plays: '530K',
-    developer: 'MindGrid',
+    categories: ['Puzzle & Merge'],
+    thumbnail: assetUrl('images/memory-matrix.svg'),
     accentColor: 'from-indigo-500 to-pink-500',
   },
 ];

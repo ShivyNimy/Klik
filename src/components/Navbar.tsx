@@ -113,7 +113,7 @@ export default function Navbar({
                   <span className="min-w-0">
                     <span className="block truncate text-xs font-bold text-white">{g.title}</span>
                     <span className="block truncate text-[10px] text-slate-400">
-                      {g.categories.find((c) => c !== 'Featured')} • {g.rating.toFixed(1)} ★
+                      {g.categories.find((c) => c !== 'Featured')}
                     </span>
                   </span>
                 </button>
@@ -156,9 +156,11 @@ export default function Navbar({
         </div>
 
         <button
-          onClick={() => open? onToggleMute(): setOpen(true)}
+          onClick={onToggleMute}
           className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 text-slate-300 sm:hidden"
-          aria-label="Sound"
+          aria-label={muted ? 'Unmute sounds' : 'Mute sounds'}
+          aria-pressed={muted}
+          title={muted ? 'Unmute sounds' : 'Mute sounds'}
         >
           {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
         </button>

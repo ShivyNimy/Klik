@@ -4,8 +4,6 @@ import {
   Maximize2,
   Minimize2,
   Heart,
-  Star,
-  Users,
   Play,
   ChevronRight,
   ArrowLeft,
@@ -17,7 +15,6 @@ import {
 } from 'lucide-react';
 import type { GameItem } from '../data/games';
 import { GAME_COMPONENTS } from '../games/registry';
-import { Rating } from './ui';
 
 interface Props {
   game: GameItem;
@@ -38,7 +35,6 @@ export default function GamePlayer({
 }: Props) {
   const [fullscreen, setFullscreen] = useState(false);
   const [tab, setTab] = useState<'how' | 'about'>('how');
-  const [instanceKey, setInstanceKey] = useState(0);
   const [copied, setCopied] = useState(false);
   const Comp = GAME_COMPONENTS[game.id];
 
@@ -53,7 +49,6 @@ export default function GamePlayer({
   useEffect(() => {
     setTab('how');
     setFullscreen(false);
-    setInstanceKey((k) => k + 1);
   }, [game.id]);
 
   useEffect(() => {
@@ -72,13 +67,38 @@ export default function GamePlayer({
   }, [game.id]);
 
   const share = async () => {
+    const shareUrl = new URL(window.location.href);
+    shareUrl.hash = game.id;
+    let didCopy = false;
+
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}#${game.id}`);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl.href);
+        didCopy = true;
+      }
     } catch {
-      /* clipboard may be blocked */
+      // Use the legacy copy path when clipboard permissions are unavailable.
     }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+
+    if (!didCopy) {
+      const field = document.createElement('textarea');
+      field.value = shareUrl.href;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      try {
+        field.select();
+        didCopy = document.execCommand('copy');
+      } catch {
+        didCopy = false;
+      } finally {
+        field.remove();
+      }
+    }
+
+    setCopied(didCopy);
+    if (didCopy) window.setTimeout(() => setCopied(false), 1800);
   };
 
   const related = allGames
@@ -104,28 +124,32 @@ export default function GamePlayer({
             <img src={game.thumbnail} alt="" className="hidden h-8 w-12 rounded object-cover sm:block" />
             <div className="min-w-0">
               <h1 className="truncate font-display text-sm font-black text-white sm:text-base">{game.title}</h1>
-              <p className="hidden truncate text-[10px] text-slate-500 sm:block">{game.developer}</p>
             </div>
           </div>
 
           <div className="ml-auto flex items-center gap-1.5">
-            <Rating rating={game.rating} plays={game.plays} />
             <button
+              type="button"
               onClick={() => onToggleFavorite(game.id)}
+              aria-label={`${favorite ? 'Remove' : 'Add'} ${game.title} ${favorite ? 'from' : 'to'} favorites`}
+              aria-pressed={favorite}
               className={`grid h-8 w-8 place-items-center rounded-lg border transition-colors ${
                 favorite
                   ? 'border-rose-500/40 bg-rose-500/20 text-rose-400'
                   : 'border-white/10 text-slate-400 hover:text-white'
               }`}
-              title="Favorite"
+              title={favorite ? 'Remove from favorites' : 'Add to favorites'}
             >
               <Heart size={14} className={favorite ? 'fill-rose-400' : ''} />
             </button>
             <button
+              type="button"
               onClick={share}
-              className="hidden h-8 items-center gap-1 rounded-lg border border-white/10 px-2 text-[10px] font-bold text-slate-400 hover:text-white sm:flex"
+              aria-label={copied ? 'Game link copied' : 'Copy game link'}
+              title={copied ? 'Game link copied' : 'Copy game link'}
+              className="flex h-8 items-center gap-1 rounded-lg border border-white/10 px-2 text-[10px] font-bold text-slate-400 hover:text-white"
             >
-              <Share2 size={13} /> {copied ? 'Copied!' : 'Share'}
+              <Share2 size={13} /> <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
             </button>
             <button
               onClick={() => setFullscreen((f) => !f)}
@@ -159,7 +183,7 @@ export default function GamePlayer({
             }
           >
             {Comp ? (
-              <GameFrame key={instanceKey}>
+              <GameFrame key={game.id}>
                 <Comp onExit={onClose} />
               </GameFrame>
             ) : (
@@ -183,12 +207,6 @@ export default function GamePlayer({
               <p className="mt-1 text-sm text-slate-400">{game.subtitle}</p>
 
               <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold text-slate-400">
-                <span className="flex items-center gap-1 rounded-md bg-white/5 px-2 py-1 text-amber-400">
-                  <Star size={11} className="fill-amber-400" /> {game.rating.toFixed(1)} / 5
-                </span>
-                <span className="flex items-center gap-1 rounded-md bg-white/5 px-2 py-1">
-                  <Users size={11} /> {game.plays} plays
-                </span>
                 <span className="flex items-center gap-1 rounded-md bg-white/5 px-2 py-1">
                   <Gamepad2 size={11} /> {game.categories.filter((c) => c !== 'Featured').join(' · ')}
                 </span>
@@ -270,7 +288,7 @@ export default function GamePlayer({
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-xs font-bold text-white">{g.title}</span>
                       <span className="block truncate text-[10px] text-slate-500">
-                        {g.rating.toFixed(1)} ★ · {g.plays}
+                        {g.categories.find((category) => category !== 'Featured')}
                       </span>
                     </span>
                     <Play size={13} className="mr-1 shrink-0 text-slate-500 group-hover:text-white" />

@@ -1,5 +1,7 @@
 /* Headless smoke test: mounts the storefront and every game, then drives input. */
 import { JSDOM } from 'jsdom';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></html>', {
   pretendToBeVisual: true,
@@ -91,12 +93,37 @@ async function run() {
   const React = (await import('react')).default;
   const { createRoot } = await import('react-dom/client');
   const { GAME_COMPONENTS } = await import('../src/games/registry');
+  const { GAMES } = await import('../src/data/games');
   const App = (await import('../src/App')).default;
+
+  if (GAMES.length !== 15 || Object.keys(GAME_COMPONENTS).length !== GAMES.length) {
+    throw new Error(`catalog/registry mismatch: ${GAMES.length} games, ${Object.keys(GAME_COMPONENTS).length} game components`);
+  }
+  for (const game of GAMES) {
+    if (!GAME_COMPONENTS[game.id]) throw new Error(`missing game component: ${game.id}`);
+    const imagePath = resolve('public', 'images', game.thumbnail.split('/').pop()!);
+    if (!existsSync(imagePath)) throw new Error(`missing game thumbnail: ${game.thumbnail}`);
+  }
+  const twoPlayerGames = GAMES.filter((game) => game.categories.includes('2 Player'));
+  if (twoPlayerGames.length !== 1 || twoPlayerGames[0].id !== 'cyber-pong-duel') {
+    throw new Error('the 2 Player category should only contain the local multiplayer game');
+  }
+  console.log('✓ catalog, registry, thumbnails, and genre labels are consistent');
 
   const root = createRoot(document.getElementById('root')!);
   root.render(React.createElement(App));
   await frame(120);
   console.log('✓ storefront mounted, root children:', document.getElementById('root')!.children.length);
+
+  const muteButton = document.querySelector('button[aria-label="Mute sounds"]') as HTMLButtonElement | null;
+  if (!muteButton) throw new Error('mobile mute control is missing');
+  muteButton.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  await frame(100);
+  if (window.localStorage.getItem('klik:muted') !== 'true') throw new Error('mobile mute button did not toggle sound');
+  if (Array.from(document.querySelectorAll('button')).some((button) => (button.textContent || '').includes('Surprise Me'))) {
+    throw new Error('mobile mute button opened the menu instead of toggling sound');
+  }
+  console.log('✓ mobile sound control toggles mute without opening the menu');
 
   // Open the flagship game through the DOM (simulates a click on the card)
   const clickText = (needle: string) => {
@@ -169,6 +196,23 @@ async function run() {
       );
     }
     await frame(500);
+
+    if (id === 'quantum-mines') {
+      key('f');
+      await frame(50);
+      const flagModeOn = Array.from(host.querySelectorAll('button')).some((button) =>
+        (button.textContent || '').includes('Flag Mode ON')
+      );
+      if (!flagModeOn) throw new Error('Quantum Mines: F should toggle Flag Mode');
+    }
+    if (id === 'zombie-siege-td') {
+      key('3');
+      await frame(50);
+      const railButton = Array.from(host.querySelectorAll('button')).find((button) =>
+        (button.textContent || '').includes('Rail Cannon')
+      );
+      if (!railButton?.className.includes('ring-1')) throw new Error('Zombie Siege: 3 should select Rail Cannon');
+    }
 
     const newErrs = errors.slice(before);
     console.log(`${newErrs.length ? '✗' : '✓'} ${id}${newErrs.length ? ' — ' + newErrs.slice(0, 3).join(' | ') : ''}`);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Play, Star, Users, ChevronRight, Flame, Sparkles } from 'lucide-react';
+import { Play, ChevronRight, Flame, Sparkles } from 'lucide-react';
 import type { GameItem } from '../data/games';
 
 interface Props {
@@ -40,7 +40,7 @@ export default function Hero({ featured, onPlay }: Props) {
                 <div className="flex flex-wrap items-center gap-2">
                   {game.badge && (
                     <span className="flex items-center gap-1 rounded-md bg-gradient-to-r from-amber-400 to-orange-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-black shadow-lg">
-                      {game.badge === 'TOP #1' ? <Flame size={11} /> : <Sparkles size={11} />}
+                      {game.badge === 'ORIGINAL' ? <Flame size={11} /> : <Sparkles size={11} />}
                       {game.badge}
                     </span>
                   )}
@@ -56,14 +56,14 @@ export default function Hero({ featured, onPlay }: Props) {
                   {game.subtitle}
                 </p>
 
-                <div className="flex items-center gap-3 text-[11px] font-semibold text-slate-400">
-                  <span className="flex items-center gap-1 text-amber-400">
-                    <Star size={13} className="fill-amber-400" /> {game.rating.toFixed(1)}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users size={13} /> {game.plays} plays
-                  </span>
-                  <span className="hidden sm:inline">by {game.developer}</span>
+                <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-slate-400">
+                  {game.categories
+                    .filter((category) => category !== 'Featured')
+                    .map((category) => (
+                      <span key={category} className="rounded-md bg-white/5 px-2 py-1">
+                        {category}
+                      </span>
+                    ))}
                 </div>
 
                 <div className="mt-1 flex items-center gap-2.5">
@@ -100,17 +100,17 @@ export default function Hero({ featured, onPlay }: Props) {
           </div>
         </div>
 
-        {/* Trending list */}
+        {/* Featured games rail */}
         <aside className="hidden rounded-3xl border border-white/10 bg-[#101423] p-3 lg:block">
           <div className="mb-2 flex items-center justify-between px-1.5 pt-1">
             <h2 className="flex items-center gap-1.5 font-display text-sm font-black uppercase tracking-wide text-white">
-              <Flame size={15} className="text-orange-500" /> Trending Now
+              <Flame size={15} className="text-orange-500" /> Featured games
             </h2>
             <ChevronRight size={16} className="text-slate-600" />
           </div>
           <div className="space-y-0.5">
-            {featured.concat(featured).slice(0, 6).map((g, idx) => (
-              <TrendingMini key={`${g.id}-${idx}`} game={g} rank={idx + 1} onPlay={onPlay} />
+            {featured.map((game) => (
+              <FeaturedMini key={game.id} game={game} onPlay={onPlay} />
             ))}
           </div>
           <div className="mt-2 rounded-2xl bg-gradient-to-br from-violet-600/25 to-fuchsia-600/10 p-3 ring-1 ring-violet-400/20">
@@ -125,23 +125,13 @@ export default function Hero({ featured, onPlay }: Props) {
   );
 }
 
-function TrendingMini({
-  game,
-  rank,
-  onPlay,
-}: {
-  game: GameItem;
-  rank: number;
-  onPlay: (id: string) => void;
-}) {
+function FeaturedMini({ game, onPlay }: { game: GameItem; onPlay: (id: string) => void }) {
   return (
     <button
+      type="button"
       onClick={() => onPlay(game.id)}
       className="group flex w-full items-center gap-2.5 rounded-xl p-1.5 text-left transition-colors hover:bg-white/5"
     >
-      <span className="w-4 shrink-0 font-display text-xs font-black text-slate-600 group-hover:text-violet-400">
-        {rank}
-      </span>
       <img
         src={game.thumbnail}
         alt=""
@@ -152,9 +142,10 @@ function TrendingMini({
           {game.title}
         </span>
         <span className="block truncate text-[10px] text-slate-500">
-          {game.rating.toFixed(1)} ★ · {game.plays}
+          {game.categories.find((category) => category !== 'Featured')}
         </span>
       </span>
+      <ChevronRight size={13} className="shrink-0 text-slate-600 group-hover:text-white" />
     </button>
   );
 }

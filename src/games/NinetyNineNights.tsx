@@ -399,6 +399,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
   useEffect(() => {
     if (!started) return;
     const down = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       const k = e.key.toLowerCase();
       if (k === 'e') interact();
       if (k === 'r') eat();
@@ -461,7 +462,7 @@ export default function NinetyNineNights({ onExit }: { onExit?: () => void }) {
   useEffect(() => {
     if (!started) return;
     const down = (e: KeyboardEvent) => {
-      if (e.key === ' ') {
+      if (e.key === ' ' && !e.repeat) {
         e.preventDefault();
         state.current.lightOn = !state.current.lightOn;
       }
