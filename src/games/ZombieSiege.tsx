@@ -145,6 +145,20 @@ export default function ZombieSiege() {
     g.current.selected = selected;
   }, [selected]);
 
+  useEffect(() => {
+    if (!started || dead) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return;
+      const kind: Record<string, TowerKind> = { '1': 'pulse', '2': 'frost', '3': 'rail' };
+      const next = kind[e.key];
+      if (!next) return;
+      e.preventDefault();
+      setSelected(next);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [started, dead]);
+
   useHiDPI(canvasRef, W, H);
 
   const startWave = useCallback(() => {
@@ -606,7 +620,7 @@ export default function ZombieSiege() {
           </div>
 
           <div className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 text-[10px] font-semibold text-slate-400">
-            Click a pad to build · click a turret to upgrade
+            1–3 selects a turret · click a pad to build · click a turret to upgrade
           </div>
 
           {!g.current.inWave && nextIn > 0 && (

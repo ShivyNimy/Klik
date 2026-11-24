@@ -13,7 +13,10 @@ await build({
   format: 'iife',
   jsx: 'automatic',
   target: 'es2020',
-  define: { 'process.env.NODE_ENV': '"production"' },
+  define: {
+    'process.env.NODE_ENV': '"production"',
+    'import.meta.env.BASE_URL': '"/"',
+  },
   loader: { '.css': 'empty' },
   outfile,
   logLevel: 'silent',

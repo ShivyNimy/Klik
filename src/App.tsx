@@ -7,6 +7,7 @@ import GamePlayer from './components/GamePlayer';
 import { SectionHeading } from './components/ui';
 import { GAMES, type GameCategory, type GameItem } from './data/games';
 import { useLocalStorage } from './hooks/useLocal';
+import { assetUrl } from './utils/assets';
 import { sfx } from './utils/sound';
 
 const CATEGORIES: GameCategory[] = [
@@ -160,7 +161,7 @@ export default function App() {
             <div className="mb-8 overflow-hidden rounded-3xl border border-amber-500/20 bg-gradient-to-r from-amber-950/50 via-[#1a1220] to-[#101423] p-1">
               <div className="flex flex-col items-start gap-4 rounded-[22px] p-4 sm:flex-row sm:items-center sm:p-5">
                 <img
-                  src="/images/99-nights.jpg"
+                  src={assetUrl('images/99-nights.jpg')}
                   alt="99 Nights in the Forest"
                   className="h-28 w-full rounded-xl object-cover ring-1 ring-white/10 sm:h-24 sm:w-44"
                 />
@@ -297,8 +298,8 @@ export default function App() {
           <section className="mt-12 grid gap-3 rounded-3xl border border-white/10 bg-[#101423] p-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: <Zap size={18} />, title: 'Instant play', desc: 'Every game loads in seconds — no installs, no launchers.', color: 'text-amber-400' },
-              { icon: <Smartphone size={18} />, title: 'Works everywhere', desc: 'Desktop, tablet and phone — keyboard or touch.', color: 'text-cyan-400' },
-              { icon: <ShieldCheck size={18} />, title: 'Family friendly', desc: 'No chat, no gambling, no accounts required.', color: 'text-emerald-400' },
+              { icon: <Smartphone size={18} />, title: 'Responsive', desc: 'Browse on desktop, tablet, or phone; controls vary by game.', color: 'text-cyan-400' },
+              { icon: <ShieldCheck size={18} />, title: 'No accounts', desc: 'No sign-up, chat, or tracking required.', color: 'text-emerald-400' },
               { icon: <Sparkles size={18} />, title: 'Hand-built originals', desc: 'All 15 games coded from scratch with love.', color: 'text-fuchsia-400' },
             ].map((f) => (
               <div key={f.title} className="flex gap-3">
@@ -346,40 +347,34 @@ export default function App() {
             </div>
           </section>
 
-          {/* Trending list */}
+          {/* More games from the collection */}
           <section className="mt-10 mb-4">
             <SectionHeading
-              title="Top 10 this week"
-              subtitle="What everyone is playing on Klik right now"
+              title="More to explore"
+              subtitle="A few more games from the Klik collection"
               action={
-                <span className="flex items-center gap-1 text-[11px] font-bold text-orange-400">
-                  <Flame size={12} /> Live ranking
+                <span className="flex items-center gap-1 text-[11px] font-bold text-violet-300">
+                  <Sparkles size={12} /> Made for instant play
                 </span>
               }
             />
             <div className="grid gap-2 sm:grid-cols-2">
-              {[...GAMES]
-                .sort((a, b) => b.rating - a.rating)
-                .slice(0, 10)
-                .map((g, i) => (
-                  <button
-                    key={g.id}
-                    onClick={() => openGame(g.id)}
-                    className="group flex items-center gap-3 rounded-xl border border-white/5 bg-[#101423] p-2 text-left transition-all hover:border-violet-400/40 hover:bg-[#151a2e]"
-                  >
-                    <span className="w-6 text-center font-display text-lg font-black text-slate-600 group-hover:text-violet-400">
-                      {i + 1}
+              {GAMES.slice(4, 10).map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => openGame(g.id)}
+                  className="group flex items-center gap-3 rounded-xl border border-white/5 bg-[#101423] p-2 text-left transition-all hover:border-violet-400/40 hover:bg-[#151a2e]"
+                >
+                  <img src={g.thumbnail} alt="" className="h-12 w-20 rounded-lg object-cover" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-xs font-bold text-white">{g.title}</span>
+                    <span className="block truncate text-[10px] text-slate-500">
+                      {g.categories.filter((c) => c !== 'Featured').join(' · ')}
                     </span>
-                    <img src={g.thumbnail} alt="" className="h-12 w-20 rounded-lg object-cover" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-xs font-bold text-white">{g.title}</span>
-                      <span className="block truncate text-[10px] text-slate-500">
-                        {g.categories.find((c) => c !== 'Featured')} · {g.rating.toFixed(1)} ★ · {g.plays}
-                      </span>
-                    </span>
-                    <ChevronRight size={15} className="mr-1 shrink-0 text-slate-600 group-hover:text-white" />
-                  </button>
-                ))}
+                  </span>
+                  <ChevronRight size={15} className="mr-1 shrink-0 text-slate-600 group-hover:text-white" />
+                </button>
+              ))}
             </div>
           </section>
         </main>
@@ -406,7 +401,7 @@ export default function App() {
             </div>
 
             <div>
-              <h4 className="mb-2.5 text-[11px] font-black uppercase tracking-widest text-slate-300">Popular Games</h4>
+              <h4 className="mb-2.5 text-[11px] font-black uppercase tracking-widest text-slate-300">Quick Play</h4>
               <ul className="space-y-1.5 text-[11.5px] text-slate-500">
                 {GAMES.slice(0, 5).map((g) => (
                   <li key={g.id}>
@@ -440,8 +435,8 @@ export default function App() {
             <div>
               <h4 className="mb-2.5 text-[11px] font-black uppercase tracking-widest text-slate-300">About Klik</h4>
               <p className="text-[11.5px] leading-relaxed text-slate-500">
-                Everything on Klik runs entirely in your browser using HTML5 canvas & React. Progress and favorites
-                are stored locally on your device — nothing is uploaded.
+                Games run in your browser. Favorites, recently played games, and sound settings stay on this device;
+                game sessions reset when you close them. Nothing is uploaded.
               </p>
               <p className="mt-3 text-[10.5px] leading-relaxed text-slate-600">
                 99 Nights in the Forest is an original Klik production inspired by the survival-horror genre. All
@@ -453,10 +448,9 @@ export default function App() {
             <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-2 text-[10.5px] text-slate-600 sm:flex-row">
               <span>© {new Date().getFullYear()} Klik Games. Made for players, not for ads.</span>
               <span className="flex items-center gap-3">
-                <span>Privacy</span>
-                <span>Terms</span>
-                <span>For Parents</span>
-                <span>Contact</span>
+                <span>No sign-up</span>
+                <span>No game-data uploads</span>
+                <span>Progress is local to this device</span>
               </span>
             </div>
           </div>

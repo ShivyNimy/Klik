@@ -8,8 +8,8 @@ installs, no accounts, no ads.
 
 ## ✨ Features
 
-- **Instant play storefront** — rotating spotlight carousel, trending rail, search with live results,
-  genre chips, favorites and “jump back in” recents (stored in `localStorage`).
+- **Instant play storefront** — rotating spotlight carousel, featured games, search, genre chips,
+  favorites and “jump back in” recents (stored in `localStorage`).
 - **Game player page** — full screen 16:9 play area, fullscreen mode, how-to-play/controls panel,
   shareable deep links (`#game-id`), related games rail and ESC-to-exit.
 - **15 original games** — each written from scratch in TypeScript + Canvas/React (no third-party game code).
@@ -20,7 +20,7 @@ installs, no accounts, no ads.
 
 | Game | Genre | Highlights |
 | --- | --- | --- |
-| **99 Nights in the Forest** | Survival horror | Day/night loop, campfire fuel, crafting (traps/torches/medkits/batteries), flashlight beam that burns the Wendigo, 4 children to rescue, night multiplier to 99 |
+| **99 Nights in the Forest** | Survival horror | Day/night loop, campfire fuel, traps/torches/medkits/batteries, flashlight that repels the Wendigo, 4 rescues; each rescue adds 2 nights at dawn |
 | SkyBlox Parkour | Platformer | Procedural sky course, lava, bounce pads, checkpoints, double jump + dash |
 | Cyber Drift GT | Racing | Pseudo-3D synthwave highway, traffic, near-miss combos, nitro |
 | Astro Survivors | Roguelite | Auto-firing bullet-heaven, XP gems, 9 upgrade evolutions, bosses |
@@ -42,7 +42,8 @@ installs, no accounts, no ads.
 | --- | --- |
 | `WASD` / arrows | Move |
 | Mouse aim + left click | Swing axe (chop trees, forage, attack) |
-| `Space` / right click | Toggle flashlight beam |
+| `Space` | Toggle flashlight beam |
+| Hold right click | Aim the flashlight beam |
 | `E` | Feed the campfire / rescue a child |
 | `R` | Eat a berry ration |
 | `1`–`4` | Craft spike trap / torch / medkit / battery |
@@ -55,14 +56,24 @@ Touch devices get an on-screen joystick, axe button, flashlight toggle and feed/
 npm install
 npm run dev             # Vite dev server        → http://localhost:5173
 npm run build           # production build       → dist/
+npm run build:pages     # GitHub Pages build with the /Klik/ base path
 npm run preview         # self-contained build served from dist/ (port 5173)
 npm run serve           # serve an existing dist/ without rebuilding
 npm run preview:vite    # plain Vite preview of dist/ (port 4173)
 
 npm test                # boot every game in jsdom (smoke test)
+npm run test:n99        # focused 99 Nights input/soak test
 npm run test:boot       # bundle + boot the app, assert first paint
-npm run test:standalone # boot the self-contained dist/index.html
+npm run test:standalone # build + boot the self-contained dist/index.html
+npm run test:pages      # build + verify GitHub Pages paths and local assets
 ```
+
+### GitHub Pages deployment
+
+The Pages workflow runs the game smoke tests, builds the site with the project-site base path (`/Klik/`),
+checks every bundled thumbnail, and deploys the generated `dist/` artifact. GitHub Pages must use **GitHub Actions**
+as its build/deploy source (not the repository source branch), because the repository contains Vite/TypeScript source
+that needs to be compiled before it can run in a browser.
 
 ### Self-contained build (single request)
 

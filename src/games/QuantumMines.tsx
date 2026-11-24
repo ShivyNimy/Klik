@@ -51,6 +51,7 @@ export default function QuantumMines() {
       );
       setStatus('ready');
       setTime(0);
+      setFlagMode(false);
       if (timerRef.current) window.clearInterval(timerRef.current);
       setSeed((s) => s + 1);
     },
@@ -69,6 +70,15 @@ export default function QuantumMines() {
       };
     }
   }, [status]);
+
+  useEffect(() => {
+    if (!started) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'f' && !e.repeat) setFlagMode((current) => !current);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [started]);
 
   const plantMines = (g: Cell[][], safeR: number, safeC: number) => {
     let placed = 0;

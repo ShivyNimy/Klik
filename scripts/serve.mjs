@@ -4,7 +4,7 @@
  */
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { dirname, extname, join, normalize, resolve } from 'node:path';
+import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
@@ -29,10 +29,14 @@ const MIME = {
 const server = createServer(async (req, res) => {
   try {
     const rawPath = decodeURIComponent((req.url || '/').split('?')[0]);
-    const safeRel = normalize(rawPath).replace(/^(\.\.[/\\])+/, '');
-    let file = resolve(join(root, safeRel === '/' ? 'index.html' : safeRel));
+    if (rawPath.replace(/\\/g, '/').split('/').includes('..')) {
+      res.writeHead(403, { 'Content-Type': 'text/plain' }).end('Forbidden');
+      return;
+    }
+    const safeRel = normalize(rawPath).replace(/^[/\\]+/, '');
+    let file = resolve(root, safeRel || 'index.html');
 
-    if (!file.startsWith(root)) {
+    if (file !== root && !file.startsWith(`${root}${sep}`)) {
       res.writeHead(403, { 'Content-Type': 'text/plain' }).end('Forbidden');
       return;
     }
