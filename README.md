@@ -71,9 +71,9 @@ npm run test:pages      # build + verify GitHub Pages paths and local assets
 ### GitHub Pages deployment
 
 The Pages workflow runs the game smoke tests, builds the site with the project-site base path (`/Klik/`),
-checks every bundled thumbnail, and deploys the generated `dist/` artifact. GitHub Pages must use **GitHub Actions**
-as its build/deploy source (not the repository source branch), because the repository contains Vite/TypeScript source
-that needs to be compiled before it can run in a browser.
+checks every bundled thumbnail, and deploys the generated `dist/` artifact from `main`. GitHub Pages must use
+**GitHub Actions** as its build/deploy source (not the repository source branch), because the repository contains
+Vite/TypeScript source that needs to be compiled before it can run in a browser.
 
 ### Self-contained build (single request)
 
