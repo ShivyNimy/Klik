@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f0933"/>
+      <stop offset="50%" stop-color="#3b0764"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <!-- Falling block puzzle -->
+  <g transform="translate(250,45)">
+    <rect width="300" height="360" rx="20" fill="#090d16" stroke="#c084fc" stroke-width="3"/>
+    <!-- Tetrominoes -->
+    <g transform="translate(30,40)">
+      <!-- T block -->
+      <rect x="60" y="0" width="56" height="56" rx="10" fill="#a855f7"/>
+      <rect x="0" y="60" width="56" height="56" rx="10" fill="#a855f7"/>
+      <rect x="60" y="60" width="56" height="56" rx="10" fill="#c084fc"/>
+      <rect x="120" y="60" width="56" height="56" rx="10" fill="#a855f7"/>
+      <!-- Bottom stack -->
+      <rect x="0" y="180" width="56" height="56" rx="10" fill="#06b6d4"/>
+      <rect x="0" y="240" width="56" height="56" rx="10" fill="#06b6d4"/>
+      <rect x="60" y="240" width="56" height="56" rx="10" fill="#f59e0b"/>
+      <rect x="120" y="240" width="56" height="56" rx="10" fill="#f59e0b"/>
+      <rect x="180" y="240" width="56" height="56" rx="10" fill="#ec4899"/>
+      <rect x="180" y="180" width="56" height="56" rx="10" fill="#ec4899"/>
+      <rect x="120" y="180" width="56" height="56" rx="10" fill="#10b981"/>
+    </g>
+  </g>
+</svg>

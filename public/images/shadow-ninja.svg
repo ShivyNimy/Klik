@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f051d"/>
+      <stop offset="60%" stop-color="#290b36"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="72%" cy="28%" r="24%">
+      <stop offset="0%" stop-color="#ff2a6d"/>
+      <stop offset="65%" stop-color="#d90452"/>
+      <stop offset="100%" stop-color="#d90452" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f5d4"/>
+      <stop offset="100%" stop-color="#7b2cbf"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <circle cx="576" cy="126" r="105" fill="#ff1e56" opacity="0.9"/>
+  <circle cx="576" cy="126" r="145" fill="url(#moon)" opacity="0.55"/>
+  <!-- Rooftops -->
+  <polygon points="0,330 220,275 260,450 0,450" fill="#070710"/>
+  <polygon points="480,310 800,240 800,450 440,450" fill="#070710"/>
+  <polyline points="0,330 220,275" stroke="#ff2a6d" stroke-width="4" fill="none"/>
+  <polyline points="480,310 800,240" stroke="#00f5d4" stroke-width="4" fill="none"/>
+  <!-- Slash arc -->
+  <path d="M 190 300 Q 390 60 630 205" stroke="url(#blade)" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M 205 295 Q 392 75 615 205" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Ninja silhouette -->
+  <g transform="translate(365,180)">
+    <path d="M-30,-20 L-95,-5 Q-65,-25 -30,-30 Z" fill="#ff2a6d"/>
+    <circle cx="0" cy="-35" r="18" fill="#0b0d17" stroke="#00f5d4" stroke-width="2"/>
+    <rect x="-10" y="-39" width="22" height="5" rx="2" fill="#00f5d4"/>
+    <polygon points="-22,-15 24,-18 14,32 -16,28" fill="#101426"/>
+    <line x1="18" y1="-12" x2="88" y2="-48" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+    <line x1="-12" y1="26" x2="-42" y2="72" stroke="#101426" stroke-width="12" stroke-linecap="round"/>
+    <line x1="12" y1="26" x2="45" y2="58" stroke="#101426" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>

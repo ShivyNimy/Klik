@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0c142c"/>
+      <stop offset="100%" stop-color="#052e2b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <!-- Mines Grid -->
+  <g transform="translate(215,50)">
+    <rect width="370" height="350" rx="22" fill="#0f172a" stroke="#14b8a6" stroke-width="3"/>
+    <g transform="translate(25,25)">
+      <!-- Tiles -->
+      <rect x="0" y="0" width="96" height="88" rx="12" fill="#1e293b"/>
+      <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="42" fill="#38bdf8" text-anchor="middle">1</text>
+
+      <rect x="112" y="0" width="96" height="88" rx="12" fill="#1e293b"/>
+      <text x="160" y="60" font-family="sans-serif" font-weight="900" font-size="42" fill="#4ade80" text-anchor="middle">2</text>
+
+      <rect x="224" y="0" width="96" height="88" rx="12" fill="#334155"/>
+      <polygon points="262,24 262,66" stroke="#f43f5e" stroke-width="5"/>
+      <polygon points="262,24 292,36 262,48" fill="#f43f5e"/>
+
+      <rect x="0" y="104" width="96" height="88" rx="12" fill="#1e293b"/>
+      <text x="48" y="164" font-family="sans-serif" font-weight="900" font-size="42" fill="#facc15" text-anchor="middle">3</text>
+
+      <rect x="112" y="104" width="96" height="88" rx="12" fill="#450a0a" stroke="#ef4444" stroke-width="3"/>
+      <circle cx="160" cy="148" r="22" fill="#ef4444"/>
+      <circle cx="153" cy="141" r="6" fill="#fca5a5"/>
+
+      <rect x="224" y="104" width="96" height="88" rx="12" fill="#334155"/>
+
+      <rect x="0" y="208" width="96" height="88" rx="12" fill="#334155"/>
+      <rect x="112" y="208" width="96" height="88" rx="12" fill="#1e293b"/>
+      <text x="160" y="268" font-family="sans-serif" font-weight="900" font-size="42" fill="#38bdf8" text-anchor="middle">1</text>
+      <rect x="224" y="208" width="96" height="88" rx="12" fill="#0d9488"/>
+    </g>
+  </g>
+</svg>
