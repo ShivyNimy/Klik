@@ -11,12 +11,44 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/images/99-nights.jpg" />
     <meta name="description" content="Klik is a free browser gaming arcade — play 99 Nights in the Forest plus 14 hand-built HTML5 originals instantly, no downloads." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      /* Critical inline styles: paint instantly, no external requests */
+      html, body { margin: 0; min-height: 100%; background: #0b0e17; color: #e2e8f0; }
+      #root { min-height: 100vh; }
+      #boot-fallback {
+        position: fixed; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 14px;
+        background: radial-gradient(circle at 50% 40%, #1b1030 0%, #0b0e17 65%);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #c4b5fd; letter-spacing: .18em; font-size: 11px; text-transform: uppercase;
+      }
+      #boot-fallback .ring {
+        width: 42px; height: 42px; border-radius: 50%;
+        border: 3px solid rgba(168,85,247,.25); border-top-color: #a855f7;
+        animation: boot-spin .8s linear infinite;
+      }
+      @keyframes boot-spin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body class="bg-[#0b0e17] text-slate-100 antialiased selection:bg-violet-500 selection:text-white overflow-x-hidden">
-    <div id="root"></div>
+    <div id="root">
+      <div id="boot-fallback">
+        <div class="ring"></div>
+        <div id="boot-label">Loading Klik…</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      /* Watchdog (classic script): if the app has not taken over the splash after 6s,
+         turn it into a tappable retry so a failed load is never a dead end. */
+      window.setTimeout(function () {
+        var boot = document.getElementById('boot-fallback');
+        if (!boot) return;
+        var label = document.getElementById('boot-label');
+        if (label) label.textContent = 'Still loading… tap here to retry';
+        boot.style.cursor = 'pointer';
+        boot.addEventListener('click', function () { window.location.reload(); });
+      }, 6000);
+    </script>
   </body>
 </html>
