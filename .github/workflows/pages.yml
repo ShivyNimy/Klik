@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      - arena/00275e4f-klik
+      # Run the build/tests for every working branch, not just one stale name.
+      - 'arena/**'
   pull_request:
     branches:
       - main

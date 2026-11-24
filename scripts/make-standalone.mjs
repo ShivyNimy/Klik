@@ -16,13 +16,22 @@ if (!existsSync(indexPath)) {
   process.exit(1);
 }
 
+let html = readFileSync(indexPath, 'utf8');
+
+// Vite can be built with a non-root base (e.g. `vite build --base=/Klik/` for
+// GitHub Pages). Derive that prefix from the emitted bundle URL so the asset
+// reader below resolves paths correctly for both root and sub-path builds.
+const basePrefix = /(?:src|href)="([^"]*)assets\/[^"]+\.js"/.exec(html)?.[1] ?? '/';
+
 const read = (urlPath) => {
-  const file = resolve(dist, urlPath.replace(/^\//, ''));
+  let relative = urlPath.replace(/^\/+/, '');
+  const prefix = basePrefix.replace(/^\/+/, '');
+  if (prefix && relative.startsWith(prefix)) relative = relative.slice(prefix.length);
+  const file = resolve(dist, relative);
   if (!existsSync(file)) throw new Error(`missing asset: ${file}`);
   return readFileSync(file, 'utf8');
 };
 
-let html = readFileSync(indexPath, 'utf8');
 let inlinedCss = 0;
 let inlinedJs = 0;
 

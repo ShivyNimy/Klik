@@ -68,6 +68,24 @@ npm run test:standalone # build + boot the self-contained dist/index.html
 npm run test:pages      # build + verify GitHub Pages paths and local assets
 ```
 
+### Vercel deployment
+
+The repository ships a [`vercel.json`](./vercel.json) so the project deploys as a Vite static app.
+In the Vercel project settings (or when importing the repository), use:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Vite |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Root directory | repository root |
+
+`vercel.json` sets all of these, so no manual overrides are needed. Import the GitHub repository
+into Vercel and every push builds the app; production deployments use the project's production
+branch. No environment variables, server functions or secrets are required — the games are entirely
+client-side and use `localStorage` plus the Web Audio API.
+
 ### GitHub Pages deployment
 
 The Pages workflow runs the game smoke tests, builds the site with the project-site base path (`/Klik/`),
