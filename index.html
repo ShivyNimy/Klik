@@ -38,5 +38,17 @@
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      /* Watchdog (classic script): if the app has not taken over the splash after 6s,
+         turn it into a tappable retry so a failed load is never a dead end. */
+      window.setTimeout(function () {
+        var boot = document.getElementById('boot-fallback');
+        if (!boot) return;
+        var label = document.getElementById('boot-label');
+        if (label) label.textContent = 'Still loading… tap here to retry';
+        boot.style.cursor = 'pointer';
+        boot.addEventListener('click', function () { window.location.reload(); });
+      }, 6000);
+    </script>
   </body>
 </html>

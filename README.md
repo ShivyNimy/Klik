@@ -53,10 +53,31 @@ Touch devices get an on-screen joystick, axe button, flashlight toggle and feed/
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # production build in dist/
-npm run preview  # preview the build
+npm run dev             # Vite dev server        → http://localhost:5173
+npm run build           # production build       → dist/
+npm run preview         # self-contained build served from dist/ (port 5173)
+npm run serve           # serve an existing dist/ without rebuilding
+npm run preview:vite    # plain Vite preview of dist/ (port 4173)
+
+npm test                # boot every game in jsdom (smoke test)
+npm run test:boot       # bundle + boot the app, assert first paint
+npm run test:standalone # boot the self-contained dist/index.html
 ```
+
+### Self-contained build (single request)
+
+`npm run preview` runs `vite build` and then `scripts/make-standalone.mjs`, which
+folds the production CSS and JS straight into `dist/index.html`. The resulting
+page is ~450 kB with **no external script or stylesheet requests** — only the game
+thumbnails under `/images/` load separately. This removes every way a restrictive
+preview host or proxy can block the bundle (module splitting, MIME types, CORS,
+HMR websockets) and guarantees the storefront paints.
+
+The bundle is safe to inline as a classic script: the build emits no `import.meta`,
+no dynamic `import()` and no top-level `import`/`export`. It is moved to the end of
+`<body>` so it runs after `#root` exists, and `scripts/serve.mjs` (zero
+dependencies, binds `0.0.0.0`) serves it with correct MIME types, 404s for missing
+assets and an SPA fallback for routes.
 
 ## 🗂 Project structure
 
